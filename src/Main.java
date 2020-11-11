@@ -10,7 +10,9 @@ public class Main {
         Item i4 = new Item("Tangfastics", Category.SWEETS, 2.95, 2);
 
         vm.addItem(i1);
-        //vm.addItem(i5);
+        vm.addItem(i2);
+        vm.addItem(i3);
+        vm.addItem(i4);
 
         for (int i: vm.getItemMapping().keySet()){
             System.out.println(i + ": " + vm.getItemMapping().get(i));
