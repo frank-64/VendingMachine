@@ -19,4 +19,12 @@ public class VendingMachine {
             itemMapping.put(key, item);
         }
     }
+
+    public Item getItem(int key){
+        return itemMapping.get(key);
+    }
+
+    public int checkStock(int key){
+        return itemMapping.get(key).getStock();
+    }
 }
