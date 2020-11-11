@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Item {
@@ -13,6 +14,10 @@ public class Item {
         this.stock = stock;
     }
 
+    public String getName(){return name; }
+
+    public void setName(String name){this.name = name; }
+
     public Category getCategory() {
         return category;
     }
@@ -23,9 +28,7 @@ public class Item {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+    public void setPrice(double price) { this.price = price; }
 
     public int getStock() {
         return stock;
@@ -45,8 +48,24 @@ public class Item {
                 '}';
     }
 
-    public static void main(String[] args) {
-        Item i1 = new Item("Doritos Chilli Heatwave",Category.SWEETS, 2.95, 2);
-        System.out.println(i1.hashCode());
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return (name.equals(item.name) && category == item.category && price == item.price && stock == item.stock);
+    }
+
+    @Override
+    public int hashCode() {
+        // fixed prime used to calculate the result for each attribute
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((category == null) ? 0 : category.hashCode());
+        result = (int) (prime * result + price);
+        result = prime * result + stock;
+
+        return result;
     }
 }
