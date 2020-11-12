@@ -1,13 +1,10 @@
-import javax.imageio.ImageIO;
+import com.sun.jdi.InvalidTypeException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class VendingGUI{
@@ -15,8 +12,6 @@ public class VendingGUI{
 
     private JPanel mainPanel;
     private JLabel title;
-    private JLabel subHead1;
-    private JButton button3;
     private JButton item_btn_1;
     private JButton item_btn_2;
     private JButton item_btn_3;
@@ -29,8 +24,19 @@ public class VendingGUI{
     private JLabel label4;
     private JLabel label5;
     private JLabel label6;
-    private JLabel errorLabel;
     private JTextArea itemChosenList;
+    private JTextArea stockList;
+    private JLabel subTotLbl;
+    private JButton resetBtn;
+    private JButton checkoutBtn;
+    private JTextField paidAmt;
+    private JLabel subTotal;
+    private JLabel errorLbl;
+    private JLabel itemsChosenLbl;
+    private JLabel changeLbl;
+    private JLabel changeValue;
+    private JLabel paidLbl;
+    private JLabel stockLbl;
     private ArrayList<Item> items;
     private ArrayList<JLabel> labels;
     private ArrayList<JButton> buttons;
@@ -47,6 +53,7 @@ public class VendingGUI{
         itemQuantities = new ArrayList<>();
         init();
         vm.addItems(items);
+        updateStockList();
 
         item_btn_1.addActionListener(new ActionListener() {
             @Override
@@ -58,7 +65,10 @@ public class VendingGUI{
                     item_btn_1.setText("No stock!");
                 }else {
                     itemChosen(i);
-                    updateChosenLabel();
+                    updateStockList();
+                    updateChosenList();
+                    updateSubtotal();
+
                 }
             }
         });
@@ -72,7 +82,9 @@ public class VendingGUI{
                     item_btn_2.setText("No stock!");
                 }else {
                     itemChosen(i);
-                    updateChosenLabel();
+                    updateStockList();
+                    updateChosenList();
+                    updateSubtotal();
                 }
             }
         });
@@ -86,7 +98,9 @@ public class VendingGUI{
                     item_btn_3.setText("No stock!");
                 }else {
                     itemChosen(i);
-                    updateChosenLabel();
+                    updateStockList();
+                    updateChosenList();
+                    updateSubtotal();
                 }
             }
         });
@@ -100,7 +114,9 @@ public class VendingGUI{
                     item_btn_4.setText("No stock!");
                 }else {
                     itemChosen(i);
-                    updateChosenLabel();
+                    updateStockList();
+                    updateChosenList();
+                    updateSubtotal();
                 }
             }
         });
@@ -114,7 +130,9 @@ public class VendingGUI{
                     item_btn_5.setText("No stock!");
                 }else {
                     itemChosen(i);
-                    updateChosenLabel();
+                    updateStockList();
+                    updateChosenList();
+                    updateSubtotal();
                 }
             }
         });
@@ -128,13 +146,58 @@ public class VendingGUI{
                     item_btn_6.setText("No stock!");
                 }else {
                     itemChosen(i);
-                    updateChosenLabel();
+                    updateStockList();
+                    updateChosenList();
+                    updateSubtotal();
                 }
+            }
+        });
+        paidAmt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Transaction trans = new Transaction();
+                double total = trans.calculateCost(itemQuantities);
+                String user_input = paidAmt.getText();
+                try{
+                    if(Double.parseDouble(user_input)<total){
+                        errorLbl.setText("You must pay more!");
+                    }else {
+                        errorLbl.setText("");
+                    }
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+        });
+        checkoutBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
 
-    public void updateChosenLabel(){
+    public void resetVm(){
+
+    }
+
+    public void updateSubtotal(){
+        Transaction temp = new Transaction();
+        DecimalFormat df = new DecimalFormat("#0.00");
+        double subtotal = temp.calculateCost(itemQuantities);
+        String stringValue = df.format(subtotal);
+        subTotal.setText("£"+stringValue);
+    }
+
+    public void updateStockList(){
+        StringBuilder sb = new StringBuilder();
+        for (Item i:this.items) {
+            sb.append(i.getName()).append(": ").append(i.getStock()).append("\n");
+        }
+        stockList.setText(sb.toString());
+    }
+
+    public void updateChosenList(){
         StringBuilder sb = new StringBuilder();
         for (ItemQuantity iq:this.itemQuantities) {
             sb.append(iq.getItem().getName()).append(" x").append(iq.getQuantity()).append("\n");
@@ -183,7 +246,10 @@ public class VendingGUI{
         // sets the labels on the GUI equal to the names and prices of the corresponding items
         for (JLabel label:this.labels) {
             Item temp_item = this.items.get(count);
-            label.setText(count+1+". "+temp_item.getName()+": £"+temp_item.getPrice());
+            DecimalFormat df = new DecimalFormat("#0.00");
+            double subtotal = temp_item.getPrice();
+            String stringValue = df.format(subtotal);
+            label.setText(count+1+". "+temp_item.getName()+": £"+stringValue);
             count++;
         }
 

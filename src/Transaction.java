@@ -9,7 +9,11 @@ public class Transaction extends VendingMachine {
         this.itemQuantities = itemQuantities;
     }
 
-    public double calculateCost(){
+    public Transaction() {
+
+    }
+
+    public double calculateCost(ArrayList<ItemQuantity> itemQuantities){
         double total = 0;
         for (int i = 0; i < itemQuantities.size(); i++) {
             Item item_temp = itemQuantities.get(i).getItem();
