@@ -15,6 +15,7 @@ public class VendingGUI{
 
     private JPanel mainPanel;
     private JLabel title;
+    private JLabel subHead1;
     private JButton button3;
     private JButton item_btn_1;
     private JButton item_btn_2;
@@ -28,9 +29,8 @@ public class VendingGUI{
     private JLabel label4;
     private JLabel label5;
     private JLabel label6;
-    private JLabel itemsChosenLabel;
     private JLabel errorLabel;
-    private JButton button1;
+    private JTextArea itemChosenList;
     private ArrayList<Item> items;
     private ArrayList<JLabel> labels;
     private ArrayList<JButton> buttons;
@@ -62,13 +62,84 @@ public class VendingGUI{
                 }
             }
         });
+        item_btn_2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int hashKey = btnMap.get(item_btn_2);
+                Item i = vm.getItem(hashKey);
+                int stock = i.getStock();
+                if (stock == 0){
+                    item_btn_2.setText("No stock!");
+                }else {
+                    itemChosen(i);
+                    updateChosenLabel();
+                }
+            }
+        });
+        item_btn_3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int hashKey = btnMap.get(item_btn_3);
+                Item i = vm.getItem(hashKey);
+                int stock = i.getStock();
+                if (stock == 0){
+                    item_btn_3.setText("No stock!");
+                }else {
+                    itemChosen(i);
+                    updateChosenLabel();
+                }
+            }
+        });
+        item_btn_4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int hashKey = btnMap.get(item_btn_4);
+                Item i = vm.getItem(hashKey);
+                int stock = i.getStock();
+                if (stock == 0){
+                    item_btn_4.setText("No stock!");
+                }else {
+                    itemChosen(i);
+                    updateChosenLabel();
+                }
+            }
+        });
+        item_btn_5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int hashKey = btnMap.get(item_btn_5);
+                Item i = vm.getItem(hashKey);
+                int stock = i.getStock();
+                if (stock == 0){
+                    item_btn_5.setText("No stock!");
+                }else {
+                    itemChosen(i);
+                    updateChosenLabel();
+                }
+            }
+        });
+        item_btn_6.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int hashKey = btnMap.get(item_btn_6);
+                Item i = vm.getItem(hashKey);
+                int stock = i.getStock();
+                if (stock == 0){
+                    item_btn_6.setText("No stock!");
+                }else {
+                    itemChosen(i);
+                    updateChosenLabel();
+                }
+            }
+        });
     }
 
     public void updateChosenLabel(){
-        itemsChosenLabel.setText("Items Chosen:");
+        StringBuilder sb = new StringBuilder();
         for (ItemQuantity iq:this.itemQuantities) {
-            itemsChosenLabel.setText(itemsChosenLabel.getText()+" "+iq.getItem().getName()+" x"+iq.getQuantity()+", ");
+            sb.append(iq.getItem().getName()).append(" x").append(iq.getQuantity()).append("\n");
         }
+        itemChosenList.setText(sb.toString());
     }
 
     public void itemChosen(Item i){
@@ -131,7 +202,8 @@ public class VendingGUI{
         JFrame frame = new JFrame("Vending Machine");
         frame.setContentPane(new VendingGUI().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(400,500));
+        frame.setMinimumSize(new Dimension(500,600));
+        frame.setMaximumSize(new Dimension(600,700));
         frame.pack();
         frame.setVisible(true);
     }
