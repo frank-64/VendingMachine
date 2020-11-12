@@ -16,7 +16,6 @@ public class VendingGUI{
     private JPanel mainPanel;
     private JLabel title;
     private JButton button3;
-    private JButton button1;
     private JButton item_btn_1;
     private JButton item_btn_2;
     private JButton item_btn_3;
@@ -31,12 +30,12 @@ public class VendingGUI{
     private JLabel label6;
     private JLabel itemsChosenLabel;
     private JLabel errorLabel;
+    private JButton button1;
     private ArrayList<Item> items;
     private ArrayList<JLabel> labels;
     private ArrayList<JButton> buttons;
     private HashMap<JButton, Integer> btnMap;
-    private ArrayList<Item> chosenItems;
-    private ArrayList<Integer> quantity;
+    private ArrayList<ItemQuantity> itemQuantities;
     private Transaction currentTrans;
 
     public VendingGUI() {
@@ -45,8 +44,7 @@ public class VendingGUI{
         labels = new ArrayList<>();
         buttons = new ArrayList<>();
         btnMap = new HashMap<>();
-        chosenItems = new ArrayList<>();
-        quantity = new ArrayList<>();
+        itemQuantities = new ArrayList<>();
         init();
         vm.addItems(items);
 
@@ -57,30 +55,38 @@ public class VendingGUI{
                 Item i = vm.getItem(hashKey);
                 int stock = i.getStock();
                 if (stock == 0){
-                    item_btn_1.setText("No stock available!");
+                    item_btn_1.setText("No stock!");
                 }else {
                     itemChosen(i);
-
+                    updateChosenLabel();
                 }
             }
         });
     }
 
+    public void updateChosenLabel(){
+        itemsChosenLabel.setText("Items Chosen:");
+        for (ItemQuantity iq:this.itemQuantities) {
+            itemsChosenLabel.setText(itemsChosenLabel.getText()+" "+iq.getItem().getName()+" x"+iq.getQuantity()+", ");
+        }
+    }
+
     public void itemChosen(Item i){
         boolean duplicate = false;
-        int index = -1;
-        for (Item item: this.items) {
-            if (item.equals(i)) {
+        int index = 0;
+        for (ItemQuantity iq: this.itemQuantities) {
+            if (iq.getItem().equals(i)) {
                 duplicate = true;
                 break;
             }
+            index++;
         }
         if(duplicate){
-            index = this.chosenItems.indexOf(i);
-            quantity.set(index, quantity.get(index)+1);
+            ItemQuantity existing_iq = this.itemQuantities.get(index);
+            existing_iq.setQuantity(existing_iq.getQuantity()+1);
         }else {
-            chosenItems.add(i);
-            quantity.add(1);
+            ItemQuantity itemQuantity = new ItemQuantity(i, 1);
+            this.itemQuantities.add(itemQuantity);
         }
 
         // decrementing the stock of the item

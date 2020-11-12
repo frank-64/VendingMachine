@@ -25,7 +25,5 @@ public class Main {
         ArrayList<Integer> quantity = new ArrayList<>();
         quantity.add(2);
         quantity.add(3);
-        Transaction t1 = new Transaction(items, quantity);
-        System.out.println(t1.calculateCost());
     }
 }
