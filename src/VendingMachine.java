@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class VendingMachine {
@@ -20,6 +21,12 @@ public class VendingMachine {
         }
     }
 
+    public void addItems(ArrayList<Item> items){
+        for (Item i: items) {
+            addItem(i);
+        }
+    }
+
     public Item getItem(int key){
         return itemMapping.get(key);
     }
@@ -27,4 +34,5 @@ public class VendingMachine {
     public int checkStock(int key){
         return itemMapping.get(key).getStock();
     }
+
 }
