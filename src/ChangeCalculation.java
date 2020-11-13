@@ -20,13 +20,12 @@ public class ChangeCalculation {
      * @param V
      * @return
      */
-    public int recursiveChange(int count, int V) {
+    public void recursiveChange(int count, int V) {
         int Vmod, Vdiv;
 
         // base case if all coins used and V did not reach 0
         if (count > coins.length-1){
             coinQuantities.clear();
-            return -1;
         }
         // setting the current_coin to the coin at location count
         int current_coin = coins[count];
@@ -38,14 +37,11 @@ public class ChangeCalculation {
             // finds division of V and current_coin which is the whole amount of times e.g. 123 div 100 = 1
             Vdiv = Math.floorDiv(V, current_coin);
 
-            // if the remainder is 0 then V has been split into the coins available
+            // if the remainder is 0 then V has been divided into the coins available
             if (Vmod == 0){
                 // add final coin and amount
                 CoinQuantity coinQuantity = new CoinQuantity(current_coin, Vdiv);
                 coinQuantities.add(coinQuantity);
-                // success as the total has been divided into the coins available
-                System.out.println("Success!");
-                return 0;
             }else {
                 // add coin and quantity
                 CoinQuantity coinQuantity = new CoinQuantity(current_coin, Vdiv);
@@ -57,7 +53,6 @@ public class ChangeCalculation {
             // coin too large to divide recursiveChange is called again.
             recursiveChange(count+1, V);
         }
-        return -1;
     }
 
     @Override

@@ -237,6 +237,5 @@ public class VendingGUI extends JFrame implements ActionListener{
             updateChosenList();
             updateSubtotal();
         }
-        System.out.println("WORKING!");
     }
 }

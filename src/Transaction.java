@@ -6,7 +6,6 @@ public class Transaction extends ChangeCalculation {
 
     // transaction of more than one item
     public Transaction(ArrayList<ItemQuantity> itemQuantities) {
-        super();
         this.itemQuantities = itemQuantities;
     }
 
