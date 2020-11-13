@@ -22,8 +22,11 @@ public class Main {
         ChangeCalculation c = new ChangeCalculation();
         int V = 123;
         c.recursiveChange(0, V);
-        System.out.println("Coins:\n"+c);
+        System.out.println(c.getChange());
 
+//        int n = 50;
+//        double n_double = ((double) n)/100;
+//        System.out.println(n_double);
 
     }
 }

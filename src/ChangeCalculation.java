@@ -1,4 +1,5 @@
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,6 +53,22 @@ public class ChangeCalculation {
         }else {
             for (CoinQuantity cq: coinQuantities) {
                 sb.append(cq.getValue()).append(" x").append(cq.getQuantity()).append("\n");
+            }
+            return sb.toString();
+        }
+    }
+
+    public String getChange(){
+        StringBuilder sb = new StringBuilder();
+        if (coinQuantities.size()==0){
+            // reset the vending machine and display error message on GUI
+            return null;
+        }else {
+            for (CoinQuantity cq: coinQuantities) {
+                DecimalFormat df = new DecimalFormat("#0.00");
+                double cqDouble = ((double) cq.getValue())/100;
+                String stringValue = df.format(cqDouble);
+                sb.append(stringValue).append(" x").append(cq.getQuantity()).append("\n");
             }
             return sb.toString();
         }
