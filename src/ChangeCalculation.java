@@ -1,8 +1,5 @@
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class ChangeCalculation {
     private final int[] coins;
@@ -15,32 +12,52 @@ public class ChangeCalculation {
     }
 
 
+    /**
+     * takes the amount V and recursively mods then divides to find the remainder and the amount of times
+     * the coin goes into V until a remainder of 0 or count goes beyond the length of the coin array.
+     *
+     * @param count
+     * @param V
+     * @return
+     */
     public int recursiveChange(int count, int V) {
         int Vmod, Vdiv;
 
         // base case if all coins used and V did not reach 0
         if (count > coins.length-1){
             coinQuantities.clear();
-            return 0;
+            return -1;
         }
+        // setting the current_coin to the coin at location count
         int current_coin = coins[count];
+
+        // check if the current coin can be divided by V to give 1 or more
         if(V >= current_coin){
+            // finds the remainder of V and the current_coin
             Vmod = Math.floorMod(V, current_coin);
+            // finds division of V and current_coin which is the whole amount of times e.g. 123 div 100 = 1
             Vdiv = Math.floorDiv(V, current_coin);
+
+            // if the remainder is 0 then V has been split into the coins available
             if (Vmod == 0){
+                // add final coin and amount
                 CoinQuantity coinQuantity = new CoinQuantity(current_coin, Vdiv);
                 coinQuantities.add(coinQuantity);
                 // success as the total has been divided into the coins available
                 System.out.println("Success!");
+                return 0;
             }else {
+                // add coin and quantity
                 CoinQuantity coinQuantity = new CoinQuantity(current_coin, Vdiv);
                 coinQuantities.add(coinQuantity);
+                // there is still a remainder left so recursiveChange is called again.
                 recursiveChange(count+1,Vmod);
             }
         }else{
+            // coin too large to divide recursiveChange is called again.
             recursiveChange(count+1, V);
         }
-        return 0;
+        return -1;
     }
 
     @Override
