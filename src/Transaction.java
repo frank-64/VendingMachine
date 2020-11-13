@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Transaction extends VendingMachine {
+public class Transaction extends ChangeCalculation {
     private ArrayList<ItemQuantity> itemQuantities;
 
     // transaction of more than one item
     public Transaction(ArrayList<ItemQuantity> itemQuantities) {
+        super();
         this.itemQuantities = itemQuantities;
     }
 
@@ -21,4 +22,5 @@ public class Transaction extends VendingMachine {
         }
         return total;
     }
+
 }

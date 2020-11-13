@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VendingMachine:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/VendingMachine_jar</output-path>
+    <root id="archive" name="VendingMachine.jar">
+      <element id="module-output" name="VendingMachine" />
+    </root>
+  </artifact>
+</component>

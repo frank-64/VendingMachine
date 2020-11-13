@@ -25,5 +25,11 @@ public class Main {
         ArrayList<Integer> quantity = new ArrayList<>();
         quantity.add(2);
         quantity.add(3);
+        double n = 19.95;
+        n *= 100;
+        int n_int = (int) n;
+
+        System.out.println(Math.floorMod(123, 123));
+        System.out.println(Math.floorDiv(123,123));
     }
 }

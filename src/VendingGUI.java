@@ -155,30 +155,41 @@ public class VendingGUI{
         paidAmt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Transaction trans = new Transaction();
-                double total = trans.calculateCost(itemQuantities);
-                String user_input = paidAmt.getText();
-                try{
-                    if(Double.parseDouble(user_input)<total){
-                        errorLbl.setText("You must pay more!");
-                    }else {
-                        errorLbl.setText("");
-                    }
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                }
+                checkPaid();
             }
         });
         checkoutBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(checkPaid()!=0){
+                    errorLbl.setText("Thanks for paying!");
+                }else {
 
+                }
             }
         });
     }
 
-    public void resetVm(){
+    public void startTransaction(){
+        Transaction t = new Transaction();
+    }
 
+    public double checkPaid(){
+        Transaction trans = new Transaction();
+        double total = trans.calculateCost(itemQuantities);
+        String user_input = paidAmt.getText();
+        try{
+            if(Double.parseDouble(user_input)<total){
+                errorLbl.setText("You must pay more!");
+                return 0;
+            }else {
+                errorLbl.setText("");
+                return total;
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return 0;
     }
 
     public void updateSubtotal(){
