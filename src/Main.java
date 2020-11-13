@@ -20,8 +20,9 @@ public class Main {
 //        }
 
         ChangeCalculation c = new ChangeCalculation();
-        int V = 123;
+        int V = 1280;
         c.recursiveChange(0, V);
+        System.out.println(c);
         System.out.println(c.getChange());
 
 //        int n = 50;

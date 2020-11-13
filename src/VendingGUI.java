@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class VendingGUI{
+public class VendingGUI extends JFrame implements ActionListener{
 
 
     private JPanel mainPanel;
@@ -33,169 +33,109 @@ public class VendingGUI{
     private JLabel subTotal;
     private JLabel errorLbl;
     private JLabel itemsChosenLbl;
-    private JLabel changeLbl;
-    private JLabel changeValue;
     private JLabel paidLbl;
     private JLabel stockLbl;
+    private JLabel changeLbl;
+    private JLabel changeValue;
+    private JTextArea changeBreakdown;
     private ArrayList<Item> items;
     private ArrayList<JLabel> labels;
     private ArrayList<JButton> buttons;
     private HashMap<JButton, Integer> btnMap;
     private ArrayList<ItemQuantity> itemQuantities;
-    private Transaction currentTrans;
+    private VendingMachine vm;
+    private double total;
+    private double paid;
+    private double change;
 
     public VendingGUI() {
-        VendingMachine vm = new VendingMachine();
+        vm = new VendingMachine();
         items = new ArrayList<>();
+        initItems();
         labels = new ArrayList<>();
         buttons = new ArrayList<>();
         btnMap = new HashMap<>();
         itemQuantities = new ArrayList<>();
-        init();
+        initLblBtn();
         vm.addItems(items);
         updateStockList();
 
-        item_btn_1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int hashKey = btnMap.get(item_btn_1);
-                Item i = vm.getItem(hashKey);
-                int stock = i.getStock();
-                if (stock == 0){
-                    item_btn_1.setText("No stock!");
-                }else {
-                    itemChosen(i);
-                    updateStockList();
-                    updateChosenList();
-                    updateSubtotal();
+        // buttons ActionListener
+        this.item_btn_1.addActionListener(this);
+        this.item_btn_2.addActionListener(this);
+        this.item_btn_3.addActionListener(this);
+        this.item_btn_4.addActionListener(this);
+        this.item_btn_5.addActionListener(this);
+        this.item_btn_6.addActionListener(this);
 
-                }
-            }
-        });
-        item_btn_2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int hashKey = btnMap.get(item_btn_2);
-                Item i = vm.getItem(hashKey);
-                int stock = i.getStock();
-                if (stock == 0){
-                    item_btn_2.setText("No stock!");
-                }else {
-                    itemChosen(i);
-                    updateStockList();
-                    updateChosenList();
-                    updateSubtotal();
-                }
-            }
-        });
-        item_btn_3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int hashKey = btnMap.get(item_btn_3);
-                Item i = vm.getItem(hashKey);
-                int stock = i.getStock();
-                if (stock == 0){
-                    item_btn_3.setText("No stock!");
-                }else {
-                    itemChosen(i);
-                    updateStockList();
-                    updateChosenList();
-                    updateSubtotal();
-                }
-            }
-        });
-        item_btn_4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int hashKey = btnMap.get(item_btn_4);
-                Item i = vm.getItem(hashKey);
-                int stock = i.getStock();
-                if (stock == 0){
-                    item_btn_4.setText("No stock!");
-                }else {
-                    itemChosen(i);
-                    updateStockList();
-                    updateChosenList();
-                    updateSubtotal();
-                }
-            }
-        });
-        item_btn_5.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int hashKey = btnMap.get(item_btn_5);
-                Item i = vm.getItem(hashKey);
-                int stock = i.getStock();
-                if (stock == 0){
-                    item_btn_5.setText("No stock!");
-                }else {
-                    itemChosen(i);
-                    updateStockList();
-                    updateChosenList();
-                    updateSubtotal();
-                }
-            }
-        });
-        item_btn_6.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int hashKey = btnMap.get(item_btn_6);
-                Item i = vm.getItem(hashKey);
-                int stock = i.getStock();
-                if (stock == 0){
-                    item_btn_6.setText("No stock!");
-                }else {
-                    itemChosen(i);
-                    updateStockList();
-                    updateChosenList();
-                    updateSubtotal();
-                }
-            }
-        });
-        paidAmt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkPaid();
-            }
-        });
         checkoutBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(checkPaid()!=0){
-                    errorLbl.setText("Thanks for paying!");
-                }else {
-
+                try {
+                    checkPaid();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
                 }
+            }
+        });
+        resetBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetVm();
             }
         });
     }
 
-    public void startTransaction(){
-        Transaction t = new Transaction();
+    public void resetVm(){
+        updateStockList();
+        itemQuantities = new ArrayList<>();
+        total=0;
+        paid=0;
+        change=0;
+        itemChosenList.setText("");
+        changeBreakdown.setText("");
+        changeValue.setText("");
+        subTotal.setText("");
+        paidAmt.setText("");
+        errorLbl.setText("");
     }
 
-    public double checkPaid(){
-        Transaction trans = new Transaction();
-        double total = trans.calculateCost(itemQuantities);
+    public void startTransaction() throws InterruptedException {
+        Transaction t = new Transaction();
+        int total_conversion = ((int) (change*100));
+        t.recursiveChange(0, total_conversion);
+        String change_result = t.getChange();
+        if (change_result==null){
+            errorLbl.setText("Change not possible.");
+            resetVm();
+        }else {
+            changeBreakdown.setText(change_result);
+            vm.updateStock(itemQuantities);
+            updateStockList();
+            errorLbl.setText("Transaction Complete!");
+        }
+    }
+
+    public void checkPaid() throws InterruptedException {
         String user_input = paidAmt.getText();
-        try{
-            if(Double.parseDouble(user_input)<total){
+        paid = Double.parseDouble(user_input);
+        change = (((double) Math.round((paid-total)*100))/100);
+        DecimalFormat df = new DecimalFormat("#0.00");
+        String change_string = "£"+df.format(change);
+            if(paid<total){
                 errorLbl.setText("You must pay more!");
-                return 0;
             }else {
                 errorLbl.setText("");
-                return total;
+                changeValue.setText(change_string);
+                startTransaction();
             }
-        }catch (Exception ex){
-            ex.printStackTrace();
         }
-        return 0;
-    }
 
     public void updateSubtotal(){
         Transaction temp = new Transaction();
         DecimalFormat df = new DecimalFormat("#0.00");
         double subtotal = temp.calculateCost(itemQuantities);
+        total = subtotal;
         String stringValue = df.format(subtotal);
         subTotal.setText("£"+stringValue);
     }
@@ -233,12 +173,9 @@ public class VendingGUI{
             ItemQuantity itemQuantity = new ItemQuantity(i, 1);
             this.itemQuantities.add(itemQuantity);
         }
-
-        // decrementing the stock of the item
-        i.setStock(i.getStock()-1);
     }
 
-    public void init(){
+    public void initItems(){
         items = new ArrayList<>();
         Item i1 = new Item("Tangfastics", Category.SWEETS, 1.50, 10);
         Item i2 = new Item("Quavers", Category.CRISP, 0.75, 33);
@@ -248,7 +185,9 @@ public class VendingGUI{
         Item i6 = new Item("RedBull", Category.DRINK, 1.50, 12);
         // adding items to it's ArrayList attribute
         Collections.addAll(this.items, i1,i2,i3,i4,i5,i6);
+    }
 
+    public void initLblBtn(){
         // adding the labels and the buttons to their own ArrayLists
         Collections.addAll(this.labels, label1, label2, label3, label4, label5, label6);
         Collections.addAll(this.buttons, item_btn_1, item_btn_2, item_btn_3, item_btn_4, item_btn_5, item_btn_6);
@@ -285,4 +224,19 @@ public class VendingGUI{
         frame.setVisible(true);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton button = (JButton) e.getSource();
+        int hashKey = btnMap.get(button);
+        Item i = vm.getItem(hashKey);
+        int stock = i.getStock();
+        if (stock == 0){
+            button.setText("No stock!");
+        }else {
+            itemChosen(i);
+            updateChosenList();
+            updateSubtotal();
+        }
+        System.out.println("WORKING!");
+    }
 }

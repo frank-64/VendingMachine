@@ -35,4 +35,11 @@ public class VendingMachine {
         return itemMapping.get(key).getStock();
     }
 
+    public void updateStock(ArrayList<ItemQuantity> itemQuantities){
+        for (ItemQuantity iq: itemQuantities) {
+            Item temp_item = iq.getItem();
+            int current_stock = temp_item.getStock();
+            temp_item.setStock(current_stock-iq.getQuantity());
+        }
+    }
 }

@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class ChangeCalculation {
-    private int[] coins;
+    private final int[] coins;
     private ArrayList<CoinQuantity> coinQuantities;
 
     public ChangeCalculation() {
         // 1=one penny, 100=one pound...
-        coins = new int[]{2000,1000,100,10,1};
+        coins = new int[]{2000,1000,100,10,5,1};
         coinQuantities = new ArrayList<>();
     }
 
@@ -20,8 +20,6 @@ public class ChangeCalculation {
 
         // base case if all coins used and V did not reach 0
         if (count > coins.length-1){
-            System.out.println(count);
-            System.out.println("Length reached!");
             coinQuantities.clear();
             return 0;
         }
