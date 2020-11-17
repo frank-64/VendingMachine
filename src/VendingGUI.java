@@ -75,6 +75,8 @@ public class VendingGUI extends JFrame implements ActionListener{
                     checkPaid();
                 } catch (InterruptedException interruptedException) {
                     interruptedException.printStackTrace();
+                }catch (NumberFormatException numberFormatException){
+                    errorLbl.setText("You must enter your paid amount!");
                 }
             }
         });
@@ -124,6 +126,11 @@ public class VendingGUI extends JFrame implements ActionListener{
         String change_string = "£"+df.format(change);
             if(paid<total){
                 errorLbl.setText("You must pay more!");
+            }else if (paid==total){
+                vm.updateStock(itemQuantities);
+                changeBreakdown.setText("Exact amount paid.");
+                updateStockList();
+                errorLbl.setText("Transaction Complete!");
             }else {
                 errorLbl.setText("");
                 changeValue.setText(change_string);

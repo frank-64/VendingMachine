@@ -78,7 +78,7 @@ public class ChangeCalculation {
                 DecimalFormat df = new DecimalFormat("#0.00");
                 double cqDouble = ((double) cq.getValue())/100;
                 String stringValue = df.format(cqDouble);
-                sb.append(stringValue).append(" x").append(cq.getQuantity()).append("\n");
+                sb.append("£").append(stringValue).append(" x").append(cq.getQuantity()).append("\n");
             }
             return sb.toString();
         }

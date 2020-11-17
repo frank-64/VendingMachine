@@ -9,7 +9,16 @@
 * Transaction which takes the selected Items and adds their cost then edits the stock value.
 * Change making problem within each transaction taking the user's cash and returning correct change from coins available.
 
-## What I used
+
+## Why Did I Do This Project?
+* I did this project to increase my portfolio and further my experience in Java. I specifically wanted improve my knowledge on the following: 
+    - Object Orientated programming in Java with good abstraction and encapsulation using appropriate accessor methods along with getters and setters.
+    - GUI development and creating a Java application.
+    - Java data structures such as HashMaps, ArrayLists and Arrays.
+    - Good programming standards commenting, consistent variable names and reduction of code duplication.
+    
+    
+## What I Used
 * Java 13 with IntelliJ as the IDE for the whole project.
 * I used the Swing GUI widget toolkit for Java. IntelliJ has a built in GUI designer which made things much quicker.
 
@@ -38,7 +47,7 @@
 ```java
     if(V >= current_coin)
 ```
-- If the above if statement is correct then the remainder and floored division of the change, and the current coin is temporarily set.
+- If the above if statement is correct then the remainder, floored division with the change and the current coin is temporarily set.
 ```java
     // example V=223,current_coin=100 then Vmod=23 Vdiv=2.
     Vmod = Math.floorMod(V, current_coin);
@@ -76,6 +85,7 @@
 
 ## Finished Design
 ![alt text](GUI.png "GUI example")
+
 
 ## What Could Be Improved?
 * Currently, there is a HashMap mapping each item's hashCode to the Item object itself. There is also a btnMap HashMap mapping each button to the hashCode of the Item related to that button. This seems really stupid but If you think about it a real vending machine has an Item's related ID such as A3 or B2 for the rows and columns so that was why I chose to implement it that way.
