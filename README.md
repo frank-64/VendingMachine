@@ -1,4 +1,8 @@
-# Vending Machine Java App
+# Vending Machine Java Applet
+
+## What is this?
+This Applet is a GUI Vending Machine with the functionality for users to select item's, view the total cost, pay and then checkout.
+The change is returned on a successful transaction with quantity and amount displayed.
 
 ## Self-set Requirements
 * Vending machine which contains items with name, category, price and stock.
