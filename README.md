@@ -95,8 +95,3 @@ The change is returned on a successful transaction with quantity and amount disp
 * Currently, there is a HashMap mapping each item's hashCode to the Item object itself. There is also a btnMap HashMap mapping each button to the hashCode of the Item related to that button. This seems really stupid but If you think about it a real vending machine has an Item's related ID such as A3 or B2 for the rows and columns so that was why I chose to implement it that way.
 * The obvious improvement would be to integrate the VendingMachine with a database which stores all the Item's attributes and stock values then CRUD methods access and change the Item's as events take place on the GUI. This could be extended to record total profit and popular items.
 * 
-
-
-# To implement
-* No change needed and transaction complete if total==amount paid
-* Update stock so user cannot add if no stock left
