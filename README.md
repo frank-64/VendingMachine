@@ -6,9 +6,9 @@ The change is returned on a successful transaction with quantity and amount disp
 
 ## Self-set Requirements
 * Vending machine which contains items with name, category, price and stock.
-* Appropriate accessor methods
+* Appropriate accessor methods.
 * Vending Machine with GUI containing buttons to choose and then pay for items.
-* Use of Event-Driven Programming
+* Use of Event-Driven Programming.
 * HashMap mapping the hashCode of an Item as the key to itself as the value.
 * Transaction which takes the selected Items and adds their cost then edits the stock value.
 * Change making problem within each transaction taking the user's cash and returning correct change from coins available.
